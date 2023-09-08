@@ -40,11 +40,6 @@ class DebtController extends Controller
      */
     public function store(StoreDebtRequest $request)
     {
-        $request->validate([
-            'name' => 'required|string',
-            'am_date' => 'required|string|max:255',
-            'amount' => 'required|integer|min:1',
-        ]);
 
         $debt = Debt::create([
             'name' => $request->name,
@@ -76,10 +71,7 @@ class DebtController extends Controller
      */
    public function pay(PayDebtRequest $request, Debt $debt)
    {
-        $request->validate([
-            'amount' => 'required|integer|min:1',
-        ]);
-        $debt = Debt::find($debt->id);
+        $debt = Debt::findOrFail($debt->id);
         $user_id_cur= $request->user()->id;
         if ($debt && $debt->user_id==$user_id_cur) {
             if ($debt->amount<=$request->amount)
@@ -112,12 +104,7 @@ class DebtController extends Controller
      */
     public function update(UpdateDebtRequest $request, Debt $debt)
     {
-         $request->validate([
-            'name' => 'string',
-            'am_date' => 'required|string|max:255',
-            'amount' => 'required|integer|min:1',
-        ]);
-        $debt = Debt::find($debt->id);
+        $debt = Debt::findOrFail($debt->id);
 
         $user_id_cur= $request->user()->id;
         if ($debt && $debt->user_id==$user_id_cur) {

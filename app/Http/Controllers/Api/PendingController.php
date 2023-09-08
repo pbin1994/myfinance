@@ -46,11 +46,6 @@ class PendingController extends Controller
      */
     public function store(StorePendingRequest $request)
     {
-         $request->validate([
-            'client' => 'array',
-            'am_date' => 'required|string|max:255',
-            'amount' => 'required|integer|min:1',
-        ]);
 
          $client_id=$request->client['id'];
 
@@ -92,10 +87,7 @@ class PendingController extends Controller
      */
    public function pay(PayPendingRequest $request, Pending $pending)
    {
-        $request->validate([
-            'amount' => 'required|integer|min:1',
-        ]);
-        $pending = Pending::find($pending->id);
+        $pending = Pending::findOrFail($pending->id);
         $user_id_cur= $request->user()->id;
         if ($pending && $pending->user_id==$user_id_cur) {
 
@@ -131,12 +123,7 @@ class PendingController extends Controller
      */
     public function update(UpdatePendingRequest $request, Pending $pending)
     {
-        $request->validate([
-            'client' => 'array',
-            'am_date' => 'required|string|max:255',
-            'amount' => 'required|integer|min:1',
-        ]);
-        $pending = Pending::find($pending->id);
+        $pending = Pending::findOrFail($pending->id);
 
         $user_id_cur= $request->user()->id;
         if ($pending && $pending->user_id==$user_id_cur) {

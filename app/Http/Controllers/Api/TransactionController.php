@@ -58,12 +58,6 @@ class TransactionController extends Controller
     public function store(StoreTransactionRequest $request)
     {
 
-        $request->validate([
-            'client' => 'array',
-            'am_date' => 'required|string|max:255',
-            'amount' => 'required|integer|min:1',
-        ]);
-
         $client_id=$request->client['id'];
 
         if ($client_id===0)
@@ -104,12 +98,7 @@ class TransactionController extends Controller
      */
     public function update(UpdateTransactionRequest $request, Transaction $transaction)
     {
-       $request->validate([
-        'client' => 'array',
-        'am_date' => 'required|string|max:255',
-        'amount' => 'required|integer|min:1',
-    ]);
-       $transaction = Transaction::find($transaction->id);
+       $transaction = Transaction::findOrFail($transaction->id);
 
        $user_id_cur= $request->user()->id;
        if ($transaction && $transaction->user_id==$user_id_cur) {

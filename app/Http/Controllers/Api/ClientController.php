@@ -28,9 +28,6 @@ class ClientController extends Controller
      */
     public function store(StoreClientRequest $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-        ]);
         $clients = Client::create([
             'name' => $request->name,
             'user_id'=> $request->user()->id
@@ -56,9 +53,6 @@ class ClientController extends Controller
      */
     public function update(UpdateClientRequest $request, Client $client)
     {
-        $request->validate([
-            'name' => 'required|string|max:255'
-        ]);
         $client = Client::find($client->id);
 
         $user_id_cur= $request->user()->id;
